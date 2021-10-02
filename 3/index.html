@@ -1,15 +1,12 @@
 <html><body>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-    <p3>
-       Qi Su qs73 
-    </p3>
     <p id="p1">
       <svg id="svg1" height="300" width="300"></svg>
       <script>
         let svg1 = d3.select("#svg1");
         //circle and text at the centre
         svg1.append("circle").attr("cx",150).attr("cy",150).attr("r",4).style("fill","lightpink");
-        svg1.append("text").text("INFO3300").attr("x",150).attr("y",150).attr("text-anchor","middle").style("font","20px Verdana").style("fill","black");
+        svg1.append("text").text("Hello World").attr("x",150).attr("y",150).attr("text-anchor","middle").style("font","20px Verdana").style("fill","black");
         //three rectangles around the text
         svg1.append("rect").attr("x",70).attr("y",100).attr("height",50).attr("width",10).attr("stroke","DarkBlue").attr("stroke-width",3).attr("fill","orange");
         svg1.append("rect").attr("x",220).attr("y",100).attr("height",25).attr("width",10).attr("stroke","black").attr("stroke-width",3).attr("fill","Aquamarine");
@@ -48,12 +45,4 @@
       </script>
     </p>
 
-    <p id="p3">   
-      <ul>
-        <li>A: This is a sequential color scale. It is effective because it can be used for ordered data.</li>
-        <li>B: This is not an effective color scale because the middle hue is saturated and not natural，which is confusing. Three saturated color at -1,0, and 1 cannot represent the axis from -1 to 1 effectively. </li>
-        <li>C: Blue-Weak/Tritanomaly and Blue-Blind/Tritanopia will cause a loss of perceivable hue variation.</li>
-        <li>D: Yes. In this map, different colors do not have different meanings. Instead, the scale can indicate the value of average life expectancy quantatively. The rainbow scale can let users tell the different values between spot and spot in the map.</li>
-      </ul>
-    </p>
 </body></html>
