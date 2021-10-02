@@ -1,0 +1,180 @@
+<html>
+<body>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <p id="p1">
+    <div id="div1">
+    </div>
+    <div id="div2">
+    </div>
+    <div id="div3">
+    </div>
+    
+    <script>
+      //A. Load the data file using an asynchronous request with d3.json. 
+      d3.json('diamonds.json').then(data => {
+      console.log(data);
+      //B. Create a 400x400px SVG element using d3 functions. 
+      const width = 400;
+      const height = 400;    
+      var svg1 = d3.select("#div1")
+                   .append("svg")
+                   .attr("id","svg1")
+                   .attr("width", width)
+                   .attr("height", height);
+      //Create two linear scale functions: an x scale for "carat" and a y scale for the "price".
+      let maxCarat = d3.max(data,d =>{return Math.max(d.carat);});
+      let maxPrice = d3.max(data,d =>{return Math.max(d.price);});
+      console.log(maxCarat,maxPrice);
+      let caratScale=d3.scaleLinear().domain([0, maxCarat]).range([0, width-5]);
+      let priceScale=d3.scaleLinear().domain([0, maxPrice]).range([height,5]);
+      //Create the gridlines
+      for(i=0;i<maxCarat;i++){
+        svg1.append("line")
+            .attr("x1",caratScale(i))
+            .attr("x2",caratScale(i))
+            .attr("y1",height)
+            .attr("y2",5)
+            .style("stroke","lightgrey")
+            .style("stroke-width",1); 
+      }
+      for(j=0;j<maxPrice;j+=1000){
+        svg1.append("line")
+            .attr("x1",0)
+            .attr("x2",width-5)
+            .attr("y1",priceScale(j))
+            .attr("y2",priceScale(j))
+            .style("stroke","lightgrey")
+            .style("stroke-width",1);
+      }
+      //C. Create a 3px radius circle for each point in the dataset
+      data.forEach((d,i) =>{
+        svg1.append('circle')
+          .attr('cx', caratScale(d['carat']))
+          .attr('cy', priceScale(d['price']))
+          .attr('r', 3)
+          .attr('opacity', 0.4)
+          .attr('index', i) 
+          .style('fill', 'darkblue');   
+      });
+      //D. Create a second 400x400px SVG element using d3 functions.    
+      var svg2 = d3.select("#div2")
+                   .append("svg")
+                   .attr("id","svg2")
+                   .attr("width", width)
+                   .attr("height", height);
+      //Create a linear scale function: an x scale for "color_rating" 
+      let color_ratingScale=d3.scaleLinear().domain([0, 8]).range([0, width-5]);    
+      //Create the gridlines
+      for(i=0;i<=8;i++){
+        svg2.append("line")
+            .attr("x1",color_ratingScale(i))
+            .attr("x2",color_ratingScale(i))
+            .attr("y1",height)
+            .attr("y2",5)
+            .style("stroke","lightgrey")
+            .style("stroke-width",1); 
+      }
+      for(j=0;j<maxPrice;j+=1000){
+        svg2.append("line")
+            .attr("x1",0)
+            .attr("x2",width-5)
+            .attr("y1",priceScale(j))
+            .attr("y2",priceScale(j))
+            .style("stroke","lightgrey")
+            .style("stroke-width",1);
+      }
+      //Create a 3px radius circle for each point in the dataset
+      data.forEach((d,i) =>{
+        svg2.append('circle')
+          //Add a random 5px jitter to each point location (i.e. location + (Math.random()*10)-5 ). 
+          //Make sure to Math.floor() that result so that you place each circle on an integer pixel location. 
+          .attr('cx', Math.floor(color_ratingScale(d['color_rating'])+(Math.random()*10)-5))
+          .attr('cy', Math.floor(priceScale(d['price'])+(Math.random()*10)-5))
+          .attr('r', 3)
+          .attr('opacity', 0.3)
+          .attr('index', i) 
+          .style('fill', 'darkgreen');   
+      });
+      //E. Create a third 400x400px SVG element using d3 functions.    
+      var svg3 = d3.select("#div3")
+                   .append("svg")
+                   .attr("id","svg3")
+                   .attr("width", width)
+                   .attr("height", height);
+      //Create a linear scale function: an x scale for "color_rating" 
+      let PricePerCarat=[];
+      data.forEach( (d,i) => {
+        PricePerCarat.push(d.price/d.carat);
+      });
+      let maxPricePerCarat = d3.max(PricePerCarat);
+      let pricePerCaratScale=d3.scaleLinear().domain([0, maxPricePerCarat]).range([height,5]);
+      //Create the gridlines
+      for(i=0;i<=8;i++){
+        svg3.append("line")
+            .attr("x1",color_ratingScale(i))
+            .attr("x2",color_ratingScale(i))
+            .attr("y1",height)
+            .attr("y2",5)
+            .style("stroke","lightgrey")
+            .style("stroke-width",1); 
+      }
+      for(j=0;j<maxPricePerCarat;j+=1000){
+        svg3.append("line")
+            .attr("x1",0)
+            .attr("x2",width-5)
+            .attr("y1",pricePerCaratScale(j))
+            .attr("y2",pricePerCaratScale(j))
+            .style("stroke","lightgrey")
+            .style("stroke-width",1);
+      }
+      //Create a 3px radius circle for each point in the dataset
+      data.forEach((d,i) =>{
+        svg3.append('circle')
+          //Add a random 5px jitter to each point location (i.e. location + (Math.random()*10)-5 ). 
+          //Make sure to Math.floor() that result so that you place each circle on an integer pixel location. 
+          .attr('cx', Math.floor(color_ratingScale(d['color_rating'])+(Math.random()*10)-5))
+          .attr('cy', Math.floor(pricePerCaratScale(PricePerCarat[i])+(Math.random()*10)-5))
+          .attr('r', 3)
+          .attr('opacity', 0.3)
+          .attr('index', i) 
+          .style('fill', 'darkred');   
+      });
+      })
+    </script>
+  </p>
+
+  <p id="p2">
+    <!-- A. create a 500x500px SVG element. Use CSS styles to give it a black background.-->
+    <svg id="svg4" width=500 height=500 style="background-color:black;"></svg>
+    <script>
+      svg4=d3.select('#svg4');
+      //load the included data file NCAA_shots.csv
+      d3.csv("NCAA_shots.csv").then(data =>{
+        console.log(data);
+        //alter the data
+        data.forEach((d,i) =>{
+          d.x=5*d.x;
+          d.y=5*d.y;
+          d.width=5*d.width;
+          d.height=5*d.height;
+        });
+        //create a new sequential color scale for the heatmap
+        const attemptExtent = d3.extent(data, d => d['log_attempt'] );
+        var colorScale = d3.scaleSequential(attemptExtent,d3.interpolateViridis);
+        //use a for or forEach loop to create new <rect> elements for each row of data in your dataset
+        
+        data.forEach((d,i) =>{
+          svg4.append('rect')
+            .attr('x', d["x"])
+            .attr('y', d["y"])
+            .attr('width', d["width"])
+            .attr('height', d["height"])
+            .attr('index', i) 
+            .style('fill', colorScale(d["log_attempt"]));   
+        });
+      });
+    </script>
+  </p>
+</body>
+</html>

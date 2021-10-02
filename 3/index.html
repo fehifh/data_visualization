@@ -1,0 +1,59 @@
+<html><body>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+    <p3>
+       Qi Su qs73 
+    </p3>
+    <p id="p1">
+      <svg id="svg1" height="300" width="300"></svg>
+      <script>
+        let svg1 = d3.select("#svg1");
+        //circle and text at the centre
+        svg1.append("circle").attr("cx",150).attr("cy",150).attr("r",4).style("fill","lightpink");
+        svg1.append("text").text("INFO3300").attr("x",150).attr("y",150).attr("text-anchor","middle").style("font","20px Verdana").style("fill","black");
+        //three rectangles around the text
+        svg1.append("rect").attr("x",70).attr("y",100).attr("height",50).attr("width",10).attr("stroke","DarkBlue").attr("stroke-width",3).attr("fill","orange");
+        svg1.append("rect").attr("x",220).attr("y",100).attr("height",25).attr("width",10).attr("stroke","black").attr("stroke-width",3).attr("fill","Aquamarine");
+        svg1.append("rect").attr("x",180).attr("y",180).attr("height",10).attr("width",40).attr("stroke","brown").attr("stroke-width",3).attr("fill","CadetBlue");
+      </script>  
+    </p>
+
+    <p id="p2">
+      <svg id="svg2"width=360 height=360 style="border:1px solid lightgrey; margin-bottom: 50px;"></svg>
+      <script>
+        //dataset
+        const data = [{"x":1.0 ,"y":9.0},
+                {"x":1.5 ,"y":6.0},
+                {"x":2.5 ,"y":4.0},
+                {"x":4.0 ,"y":2.0},
+                {"x":5.0 ,"y":1.6},
+                {"x":6.0 ,"y":2.4},
+                {"x":7.0 ,"y":3.0},
+                {"x":8.0 ,"y":3.4},
+                {"x":9.0 ,"y":3.6}];
+        //map data coordinates to SVG coordinates with a margin of 20 pixels
+        let dataScalex=d3.scaleLinear().domain([0,10]).range([20,340]);
+        let dataScaley=d3.scaleLinear().domain([10,0]).range([20,340]);
+        let svg2 = d3.select("#svg2");
+        //gridlines and axis labels
+        for(let i=0;i<=10;i++){
+          svg2.append("line").attr("x1",20).attr("x2",340).attr("y1",dataScaley(i)).attr("y2",dataScaley(i)).style("stroke","lightgrey").style("stroke-width",1);
+          svg2.append("line").attr("x1",dataScalex(i)).attr("x2",dataScalex(i)).attr("y1",20).attr("y2",340).style("stroke","lightgrey").style("stroke-width",1);
+          if(i%5==0){
+            svg2.append("text").text(i).attr("x",dataScalex(i)).attr("y",dataScaley(0)+2).attr("dominant-baseline","hanging").attr("text-anchor","middle").style("font","Arial");
+            svg2.append("text").text(i).attr("x",dataScalex(0)-2).attr("y",dataScaley(i)).attr("dominant-baseline","middle").attr("text-anchor","end").style("font","Arial");
+          }
+        }
+        //circles
+        data.forEach(p => svg2.append("circle").attr("cx",dataScalex(p.x)).attr("cy",dataScaley(p.y)).attr("r",10).style("fill","darkblue"));
+      </script>
+    </p>
+
+    <p id="p3">   
+      <ul>
+        <li>A: This is a sequential color scale. It is effective because it can be used for ordered data.</li>
+        <li>B: This is not an effective color scale because the middle hue is saturated and not natural，which is confusing. Three saturated color at -1,0, and 1 cannot represent the axis from -1 to 1 effectively. </li>
+        <li>C: Blue-Weak/Tritanomaly and Blue-Blind/Tritanopia will cause a loss of perceivable hue variation.</li>
+        <li>D: Yes. In this map, different colors do not have different meanings. Instead, the scale can indicate the value of average life expectancy quantatively. The rainbow scale can let users tell the different values between spot and spot in the map.</li>
+      </ul>
+    </p>
+</body></html>
